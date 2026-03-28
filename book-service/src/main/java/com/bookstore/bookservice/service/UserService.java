@@ -4,20 +4,24 @@ import com.bookstore.bookservice.model.User;
 import com.bookstore.bookservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
     public List<User> getAll() {
         return userRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Optional<User> getById(Long id) {
         return userRepository.findById(id);
     }
@@ -42,9 +46,8 @@ public class UserService {
     }
 
     public void delete(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new IllegalArgumentException("Kullanıcı bulunamadı: " + id);
-        }
-        userRepository.deleteById(id);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Kullanıcı bulunamadı: " + id));
+        userRepository.delete(user);
     }
 }

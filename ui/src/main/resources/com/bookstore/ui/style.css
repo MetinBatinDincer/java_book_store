@@ -1,0 +1,427 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Dijital Kitap Satış ve Otomasyon Sistemi — UI Stilleri
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Global ──────────────────────────────────────────────────────────── */
+.root {
+    -fx-font-family: "Segoe UI", "Inter", Arial, sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: #f0f4f8;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────── */
+.app-header {
+    -fx-background-color: linear-gradient(to right, #0f172a 0%, #1e3a5f 60%, #1e40af 100%);
+    -fx-padding: 0 24px 0 0;
+    -fx-min-height: 64px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 3);
+}
+.header-logo-box {
+    -fx-background-color: rgba(255,255,255,0.12);
+    -fx-background-radius: 0;
+    -fx-min-width: 64px;
+    -fx-pref-width: 64px;
+    -fx-min-height: 64px;
+    -fx-pref-height: 64px;
+    -fx-alignment: center;
+    -fx-border-color: rgba(255,255,255,0.08);
+    -fx-border-width: 0 1 0 0;
+}
+.header-logo-icon {
+    -fx-font-size: 26px;
+}
+.app-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f8fafc;
+}
+.app-subtitle {
+    -fx-font-size: 11px;
+    -fx-text-fill: #93c5fd;
+}
+.header-avatar {
+    -fx-fill: #3b82f6;
+    -fx-stroke: rgba(255,255,255,0.3);
+    -fx-stroke-width: 2;
+}
+.header-username {
+    -fx-text-fill: #e2e8f0;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+.header-user-badge {
+    -fx-background-color: rgba(255,255,255,0.1);
+    -fx-background-radius: 20px;
+    -fx-padding: 6px 14px 6px 10px;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────────────── */
+.sidebar {
+    -fx-background-color: #1e293b;
+    -fx-min-width: 220px;
+    -fx-pref-width: 220px;
+    -fx-padding: 20px 0 0 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0, 2, 0);
+}
+.sidebar-section-label {
+    -fx-text-fill: #475569;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 20px 6px 20px;
+    -fx-letter-spacing: 1.5px;
+}
+.nav-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 13px;
+    -fx-alignment: center-left;
+    -fx-padding: 12px 20px;
+    -fx-pref-width: 220px;
+    -fx-max-width: 220px;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+}
+.nav-btn:hover {
+    -fx-background-color: #2d3f55;
+    -fx-text-fill: #e2e8f0;
+}
+.nav-btn-active {
+    -fx-background-color: linear-gradient(to right, #1d4ed8, #2563eb);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-color: #60a5fa;
+    -fx-border-width: 0 0 0 3;
+}
+.nav-btn-active:hover {
+    -fx-background-color: linear-gradient(to right, #2563eb, #3b82f6);
+}
+.sidebar-footer {
+    -fx-padding: 14px 20px;
+    -fx-border-color: #334155;
+    -fx-border-width: 1 0 0 0;
+}
+.sidebar-footer-text {
+    -fx-text-fill: #475569;
+    -fx-font-size: 11px;
+}
+
+/* ── Content area ────────────────────────────────────────────────────── */
+.content-area {
+    -fx-background-color: #f0f4f8;
+    -fx-padding: 28px;
+}
+
+/* ── Page header ─────────────────────────────────────────────────────── */
+.page-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0f172a;
+}
+.page-subtitle {
+    -fx-font-size: 12px;
+    -fx-text-fill: #64748b;
+}
+
+/* ── Card ────────────────────────────────────────────────────────────── */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.08), 16, 0, 0, 4);
+}
+.card-header {
+    -fx-padding: 16px 22px;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-color: #fafbfd;
+    -fx-background-radius: 14px 14px 0 0;
+}
+.card-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e293b;
+}
+
+/* ── Badge ───────────────────────────────────────────────────────────── */
+.badge-blue {
+    -fx-background-color: #dbeafe;
+    -fx-text-fill: #1d4ed8;
+    -fx-background-radius: 20px;
+    -fx-padding: 3px 12px;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+/* ── Toolbar ─────────────────────────────────────────────────────────── */
+.toolbar-area {
+    -fx-padding: 12px 22px;
+    -fx-spacing: 8px;
+    -fx-alignment: center-left;
+    -fx-border-color: #eef0f5;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-color: #fafbfd;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────── */
+.btn-primary {
+    -fx-background-color: linear-gradient(to bottom, #3b82f6, #2563eb);
+    -fx-text-fill: white;
+    -fx-background-radius: 8px;
+    -fx-padding: 9px 20px;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.35), 6, 0, 0, 2);
+}
+.btn-primary:hover   { -fx-background-color: linear-gradient(to bottom, #60a5fa, #3b82f6); }
+.btn-primary:pressed { -fx-background-color: #1e40af; }
+
+.btn-secondary {
+    -fx-background-color: white;
+    -fx-text-fill: #374151;
+    -fx-background-radius: 8px;
+    -fx-padding: 9px 18px;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 8px;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+}
+.btn-secondary:hover   { -fx-background-color: #f3f4f6; -fx-border-color: #9ca3af; }
+.btn-secondary:pressed { -fx-background-color: #e5e7eb; }
+
+.btn-danger {
+    -fx-background-color: white;
+    -fx-text-fill: #dc2626;
+    -fx-background-radius: 8px;
+    -fx-padding: 5px 10px;
+    -fx-border-color: #fca5a5;
+    -fx-border-radius: 8px;
+    -fx-cursor: hand;
+    -fx-font-size: 11px;
+}
+.btn-danger:hover { -fx-background-color: #fef2f2; -fx-border-color: #f87171; }
+
+/* ── Search field ────────────────────────────────────────────────────── */
+.search-field {
+    -fx-background-color: white;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 8px 14px;
+    -fx-pref-width: 270px;
+    -fx-font-size: 13px;
+    -fx-prompt-text-fill: #9ca3af;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 4, 0, 0, 1);
+}
+.search-field:focused {
+    -fx-border-color: #3b82f6;
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.2), 6, 0, 0, 1);
+}
+
+/* ── Table ───────────────────────────────────────────────────────────── */
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-table-cell-border-color: transparent;
+}
+.table-view .column-header-background { -fx-background-color: #f8fafc; }
+.table-view .filler                   { -fx-background-color: #f8fafc; }
+.table-view .column-header {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 0 0 2 0;
+    -fx-size: 42px;
+}
+.table-view .column-header .label {
+    -fx-text-fill: #64748b;
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+    -fx-padding: 0 14px;
+    -fx-letter-spacing: 0.5px;
+}
+.table-row-cell {
+    -fx-cell-size: 50px;
+    -fx-border-color: transparent transparent #f1f5f9 transparent;
+}
+.table-row-cell:even  { -fx-background-color: white; }
+.table-row-cell:odd   { -fx-background-color: #fafbfe; }
+.table-row-cell:hover { -fx-background-color: #eff6ff; }
+.table-row-cell:selected            { -fx-background-color: #dbeafe; }
+.table-row-cell:selected .text      { -fx-fill: #1e40af; }
+.table-cell {
+    -fx-padding: 0 14px;
+    -fx-text-fill: #374151;
+    -fx-font-size: 13px;
+}
+
+/* ── Genre badge (tablo hücresi) ─────────────────────────────────────── */
+.genre-badge {
+    -fx-background-color: #f3e8ff;
+    -fx-text-fill: #7e22ce;
+    -fx-background-radius: 12px;
+    -fx-padding: 2px 10px;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+/* ── Genre panel (Satış sol kenar çubuğu) ────────────────────────────── */
+.genre-panel {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 0 1 0 0;
+    -fx-pref-width: 178px;
+    -fx-min-width: 158px;
+    -fx-padding: 12px 0;
+    -fx-spacing: 1px;
+}
+.genre-section-label {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 16px 10px 16px;
+    -fx-letter-spacing: 1.5px;
+}
+.genre-filter-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #64748b;
+    -fx-font-size: 13px;
+    -fx-alignment: center-left;
+    -fx-padding: 9px 16px;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+}
+.genre-filter-btn:hover {
+    -fx-background-color: #eef2ff;
+    -fx-text-fill: #4338ca;
+}
+.genre-filter-btn-active {
+    -fx-background-color: #eef2ff;
+    -fx-text-fill: #4338ca;
+    -fx-font-weight: bold;
+    -fx-border-color: #6366f1;
+    -fx-border-width: 0 0 0 3;
+}
+
+/* ── Status bar ──────────────────────────────────────────────────────── */
+.status-bar {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 7px 24px;
+}
+.status-text { -fx-text-fill: #94a3b8; -fx-font-size: 12px; }
+
+/* ── Book Card (Satış ekranı) ────────────────────────────────────────── */
+.book-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.09), 12, 0, 0, 3);
+    -fx-pref-width: 200px;
+    -fx-min-width: 178px;
+    -fx-pref-height: 270px;
+    -fx-cursor: hand;
+}
+.book-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.22), 16, 0, 0, 5);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+.book-card-genre {
+    -fx-background-color: rgba(255,255,255,0.25);
+    -fx-text-fill: white;
+    -fx-background-radius: 10px;
+    -fx-padding: 2px 8px;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+.book-card-title {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e293b;
+    -fx-wrap-text: true;
+}
+.book-card-author {
+    -fx-font-size: 11px;
+    -fx-text-fill: #64748b;
+}
+.book-card-price {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1d4ed8;
+}
+.book-card-stock-ok  { -fx-font-size: 11px; -fx-text-fill: #16a34a; }
+.book-card-stock-low { -fx-font-size: 11px; -fx-text-fill: #dc2626; -fx-font-weight: bold; }
+
+/* ── Cart Panel ──────────────────────────────────────────────────────── */
+.cart-panel {
+    -fx-background-color: white;
+    -fx-background-radius: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.09), 12, 0, 0, 3);
+    -fx-pref-width: 310px;
+    -fx-min-width: 270px;
+    -fx-padding: 0;
+}
+.cart-header {
+    -fx-background-color: linear-gradient(to right, #1e293b, #1e40af);
+    -fx-background-radius: 14px 14px 0 0;
+    -fx-padding: 16px 20px;
+}
+.cart-header-title {
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+.cart-total-row {
+    -fx-padding: 14px 20px;
+    -fx-border-color: #f1f5f9;
+    -fx-border-width: 1 0 1 0;
+    -fx-background-color: #fafbfe;
+}
+.cart-total-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #64748b;
+}
+.cart-total-amount {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0f172a;
+}
+.btn-buy {
+    -fx-background-color: linear-gradient(to bottom, #22c55e, #16a34a);
+    -fx-text-fill: white;
+    -fx-background-radius: 9px;
+    -fx-padding: 12px 0;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-max-width: infinity;
+    -fx-effect: dropshadow(gaussian, rgba(22,163,74,0.4), 6, 0, 0, 2);
+}
+.btn-buy:hover    { -fx-background-color: linear-gradient(to bottom, #4ade80, #22c55e); }
+.btn-buy:disabled { -fx-background-color: #e5e7eb; -fx-text-fill: #9ca3af; -fx-effect: none; }
+.btn-clear {
+    -fx-background-color: white;
+    -fx-text-fill: #ef4444;
+    -fx-background-radius: 9px;
+    -fx-padding: 9px 0;
+    -fx-border-color: #fca5a5;
+    -fx-border-radius: 9px;
+    -fx-cursor: hand;
+    -fx-max-width: infinity;
+    -fx-font-size: 13px;
+}
+.btn-clear:hover    { -fx-background-color: #fff1f2; }
+.btn-clear:disabled { -fx-text-fill: #d1d5db; -fx-border-color: #f3f4f6; }
+.btn-add-cart {
+    -fx-background-color: linear-gradient(to bottom, #3b82f6, #2563eb);
+    -fx-text-fill: white;
+    -fx-background-radius: 7px;
+    -fx-padding: 7px 0;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-max-width: infinity;
+}
+.btn-add-cart:hover    { -fx-background-color: linear-gradient(to bottom, #60a5fa, #3b82f6); }
+.btn-add-cart:disabled { -fx-background-color: #e5e7eb; -fx-text-fill: #9ca3af; }

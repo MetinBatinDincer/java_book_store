@@ -6,6 +6,8 @@ public class ApiResponse<T> {
     private String message;
     private T data;
 
+    protected ApiResponse() {}
+
     private ApiResponse(boolean success, String message, T data) {
         this.success = success;
         this.message = message;
