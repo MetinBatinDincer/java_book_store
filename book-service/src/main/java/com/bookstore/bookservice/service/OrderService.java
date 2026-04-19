@@ -1,5 +1,6 @@
 package com.bookstore.bookservice.service;
 
+import com.bookstore.bookservice.exception.ResourceNotFoundException;
 import com.bookstore.bookservice.model.*;
 import com.bookstore.bookservice.repository.BookRepository;
 import com.bookstore.bookservice.repository.OrderRepository;
@@ -41,7 +42,7 @@ public class OrderService {
 
     public Order create(Long userId, List<OrderItem> items) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Kullanıcı bulunamadı: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("Kullanıcı bulunamadı: " + userId));
 
         // Tüm kitapları tek sorguda çek — N+1'i önler
         List<Long> bookIds = items.stream()
@@ -55,7 +56,7 @@ public class OrderService {
         BigDecimal total = BigDecimal.ZERO;
         for (OrderItem item : items) {
             Book book = bookMap.get(item.getBook().getId());
-            if (book == null) throw new IllegalArgumentException(
+            if (book == null) throw new ResourceNotFoundException(
                     "Kitap bulunamadı: " + item.getBook().getId());
             if (book.getStockQuantity() < item.getQuantity()) throw new IllegalArgumentException(
                     "Yetersiz stok: " + book.getTitle());
@@ -77,7 +78,7 @@ public class OrderService {
 
     public Order updateStatus(Long id, Order.Status status) {
         Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Sipariş bulunamadı: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Sipariş bulunamadı: " + id));
         if (order.getStatus() == status) return order;
         order.setStatus(status);
         return orderRepository.save(order);
@@ -85,7 +86,7 @@ public class OrderService {
 
     public void delete(Long id) {
         Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Sipariş bulunamadı: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Sipariş bulunamadı: " + id));
         orderRepository.delete(order);
     }
 }

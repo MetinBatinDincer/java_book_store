@@ -18,7 +18,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class BookListView extends BorderPane {
+public class BookListView extends BaseView {
 
     static final List<String> GENRES = List.of(
         "Edebiyat", "Çocuk", "Eğitim & Başvuru", "Ders ve Sınav",
@@ -34,6 +34,9 @@ public class BookListView extends BorderPane {
     private final Label                   countBadge;
     private final ProgressIndicator       spinner;
     private       Task<List<Book>>        activeTask;
+
+    @Override protected void buildUI() {}
+    @Override public void refresh() { loadBooks(); }
 
     public BookListView(BookApiService apiService) {
         this.apiService    = apiService;

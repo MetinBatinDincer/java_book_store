@@ -1,5 +1,7 @@
 package com.bookstore.bookservice.service;
 
+import com.bookstore.bookservice.exception.ConflictException;
+import com.bookstore.bookservice.exception.ResourceNotFoundException;
 import com.bookstore.bookservice.model.User;
 import com.bookstore.bookservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +30,7 @@ public class UserService {
 
     public User create(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new IllegalArgumentException("Bu e-posta zaten kayıtlı: " + user.getEmail());
+            throw new ConflictException("Bu e-posta zaten kayıtlı: " + user.getEmail());
         }
         if (user.getRole() == null) {
             user.setRole(User.Role.CUSTOMER);
@@ -38,7 +40,7 @@ public class UserService {
 
     public User update(Long id, User updated) {
         User existing = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Kullanıcı bulunamadı: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Kullanıcı bulunamadı: " + id));
         existing.setName(updated.getName());
         existing.setEmail(updated.getEmail());
         existing.setRole(updated.getRole());
@@ -47,7 +49,7 @@ public class UserService {
 
     public void delete(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Kullanıcı bulunamadı: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Kullanıcı bulunamadı: " + id));
         userRepository.delete(user);
     }
 }

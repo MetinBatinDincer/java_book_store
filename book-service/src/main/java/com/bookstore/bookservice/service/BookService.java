@@ -1,5 +1,6 @@
 package com.bookstore.bookservice.service;
 
+import com.bookstore.bookservice.exception.ResourceNotFoundException;
 import com.bookstore.bookservice.model.Book;
 import com.bookstore.bookservice.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class BookService {
 
     public Book update(Long id, Book updated) {
         Book existing = bookRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Kitap bulunamadı: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Kitap bulunamadı: " + id));
         existing.setTitle(updated.getTitle());
         existing.setAuthor(updated.getAuthor());
         existing.setIsbn(updated.getIsbn());
@@ -43,7 +44,7 @@ public class BookService {
 
     public void delete(Long id) {
         Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Kitap bulunamadı: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Kitap bulunamadı: " + id));
         bookRepository.delete(book);
     }
 }

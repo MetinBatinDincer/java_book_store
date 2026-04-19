@@ -1,8 +1,13 @@
 package com.bookstore.ui.view;
 
+import com.bookstore.ui.auth.SessionManager;
+import com.bookstore.ui.contract.Downloadable;
+import com.bookstore.ui.contract.Payable;
 import com.bookstore.ui.model.Book;
 import com.bookstore.ui.model.CartItem;
+import com.bookstore.ui.model.PaymentInfo;
 import com.bookstore.ui.service.BookApiService;
+import com.bookstore.ui.util.PdfReceiptGenerator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -11,12 +16,15 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-public class SalesView extends BorderPane {
+public class SalesView extends BaseView implements Payable, Downloadable {
 
     private final BookApiService           apiService;
     private final ObservableList<Book>     catalog   = FXCollections.observableArrayList();
@@ -26,18 +34,24 @@ public class SalesView extends BorderPane {
     private final Label                    statusLabel = new Label("Hazır.");
     private final FlowPane                 catalogPane = new FlowPane();
     private       Task<List<Book>>         activeTask;
+    private       List<CartItem>           lastPurchase;
 
     private String activeGenre  = "Tümü";
     private String searchText   = "";
 
     public SalesView(BookApiService apiService) {
         this.apiService = apiService;
-        catalogPane.setHgap(14);
-        catalogPane.setVgap(14);
-        catalogPane.setPadding(new Insets(16));
+        buildUI();
+    }
 
-        Label pageTitle    = new Label("Satış Ekranı");
-        Label pageSubtitle = new Label("Kitap seçin, sepete ekleyin ve satın alın");
+    @Override
+    protected void buildUI() {
+        catalogPane.setHgap(18);
+        catalogPane.setVgap(18);
+        catalogPane.setPadding(new Insets(20));
+
+        Label pageTitle    = new Label("Kitap Kataloğu");
+        Label pageSubtitle = new Label("Beğendiğiniz kitabı seçin, sepete ekleyin ve satın alın");
         pageTitle.getStyleClass().add("page-title");
         pageSubtitle.getStyleClass().add("page-subtitle");
         VBox titleBox = new VBox(4, pageTitle, pageSubtitle);
@@ -71,6 +85,9 @@ public class SalesView extends BorderPane {
 
         loadCatalog();
     }
+
+    @Override
+    public void refresh() { loadCatalog(); }
 
     // ── Catalog toolbar with search ───────────────────────────────────────
 
@@ -176,10 +193,10 @@ public class SalesView extends BorderPane {
         String coverColor = genreCoverColor(genre);
 
         Label coverIcon = new Label(genreIcon(genre));
-        coverIcon.setStyle("-fx-font-size: 28px;");
+        coverIcon.setStyle("-fx-font-size: 36px;");
         StackPane cover = new StackPane(coverIcon);
-        cover.setStyle("-fx-background-color: " + coverColor + "; -fx-background-radius: 8px 8px 0 0;");
-        cover.setPrefHeight(80);
+        cover.setStyle("-fx-background-color: " + coverColor + "; -fx-background-radius: 10px 10px 0 0;");
+        cover.setPrefHeight(110);
         cover.setMaxWidth(Double.MAX_VALUE);
 
         // Kart gövdesi
@@ -189,7 +206,7 @@ public class SalesView extends BorderPane {
         Label titleLbl = new Label(book.getTitle());
         titleLbl.getStyleClass().add("book-card-title");
         titleLbl.setWrapText(true);
-        titleLbl.setMaxWidth(172);
+        titleLbl.setMaxWidth(192);
 
         Label authorLbl = new Label(book.getAuthor() != null ? "✍  " + book.getAuthor() : "");
         authorLbl.getStyleClass().add("book-card-author");
@@ -316,34 +333,100 @@ public class SalesView extends BorderPane {
         totalLabel.setText(total.toPlainString() + " ₺");
     }
 
+    // ── Payable ───────────────────────────────────────────────────────────
+
+    @Override
+    public BigDecimal getTotal() {
+        return cartItems.stream()
+                .map(CartItem::subtotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public boolean processPayment(PaymentInfo payment) {
+        // Kart kaydedilecekse session'a yaz
+        if (payment.isSaveCard() && session.isLoggedIn()) {
+            session.getCurrentUser().setSavedCardHolder(payment.getCardHolder());
+            session.getCurrentUser().setSavedCardNumber(payment.getCardNumber());
+            session.getCurrentUser().setSavedCardExpiry(payment.getExpiry());
+        }
+        return true; // ödeme simülasyonu — gerçek entegrasyon MongoDB aşamasında
+    }
+
+    // ── Downloadable ──────────────────────────────────────────────────────
+
+    @Override
+    public void downloadReceipt(Stage owner) {
+        if (lastPurchase == null || lastPurchase.isEmpty()) return;
+
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Makbuzu Kaydet");
+        fc.setInitialFileName("makbuz.pdf");
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Dosyası", "*.pdf"));
+        File file = fc.showSaveDialog(owner);
+        if (file == null) return;
+
+        String buyer = session.isGuest() ? "Misafir" : session.getDisplayName();
+        try {
+            PdfReceiptGenerator.generate(file, lastPurchase, getTotal(), buyer);
+            Alert ok = new Alert(Alert.AlertType.INFORMATION);
+            ok.setTitle("PDF Kaydedildi");
+            ok.setHeaderText("Makbuz başarıyla kaydedildi.");
+            ok.setContentText(file.getAbsolutePath());
+            ok.showAndWait();
+        } catch (Exception ex) {
+            new Alert(Alert.AlertType.ERROR, "PDF oluşturulamadı: " + ex.getMessage()).showAndWait();
+        }
+    }
+
     private void purchase() {
+        if (cartItems.isEmpty()) return;
+
+        // Ödeme diyaloğunu aç
+        Optional<PaymentInfo> paymentOpt = new PaymentDialog(getTotal()).show();
+        if (paymentOpt.isEmpty()) return;
+
+        PaymentInfo payment = paymentOpt.get();
+        if (!processPayment(payment)) return;
+
         List<CartItem> snapshot = List.copyOf(cartItems);
+        Long userId = session.getUserId();
 
         Task<Void> task = new Task<>() {
             @Override protected Void call() throws Exception {
-                apiService.createOrder(1L, snapshot);
+                apiService.createOrder(userId, snapshot);
                 return null;
             }
         };
 
         task.setOnSucceeded(e -> {
+            lastPurchase = snapshot;
             cartItems.clear();
             statusLabel.setText("Satış tamamlandı! Stoklar güncellendi.");
             loadCatalog();
+
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Satış Tamamlandı");
-            alert.setHeaderText("Satış başarıyla gerçekleşti.");
-            alert.setContentText("Sipariş oluşturuldu, stoklar güncellendi.");
-            alert.showAndWait();
+            alert.setHeaderText("Ödeme alındı, sipariş oluşturuldu.");
+            alert.setContentText("Makbuz indirmek ister misiniz?");
+
+            ButtonType pdfBtn   = new ButtonType("PDF İndir", ButtonBar.ButtonData.YES);
+            ButtonType closeBtn = ButtonType.OK;
+            alert.getButtonTypes().setAll(pdfBtn, closeBtn);
+            alert.showAndWait().ifPresent(btn -> {
+                if (btn == pdfBtn) {
+                    Stage owner = (Stage) getScene().getWindow();
+                    downloadReceipt(owner);
+                }
+            });
         });
 
         task.setOnFailed(e -> {
             Throwable ex = task.getException();
             statusLabel.setText("Hata: " + ex.getMessage());
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage());
             alert.setTitle("Satış Hatası");
             alert.setHeaderText("Sipariş oluşturulamadı.");
-            alert.setContentText(ex.getMessage());
             alert.showAndWait();
         });
 
