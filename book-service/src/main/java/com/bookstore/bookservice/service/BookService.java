@@ -4,20 +4,24 @@ import com.bookstore.bookservice.model.Book;
 import com.bookstore.bookservice.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BookService {
 
     private final BookRepository bookRepository;
 
+    @Transactional(readOnly = true)
     public List<Book> getAll() {
         return bookRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Optional<Book> getById(Long id) {
         return bookRepository.findById(id);
     }
@@ -38,9 +42,8 @@ public class BookService {
     }
 
     public void delete(Long id) {
-        if (!bookRepository.existsById(id)) {
-            throw new IllegalArgumentException("Kitap bulunamadı: " + id);
-        }
-        bookRepository.deleteById(id);
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Kitap bulunamadı: " + id));
+        bookRepository.delete(book);
     }
 }

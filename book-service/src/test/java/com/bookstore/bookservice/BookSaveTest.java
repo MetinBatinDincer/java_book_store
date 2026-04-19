@@ -5,6 +5,7 @@ import com.bookstore.bookservice.repository.BookRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 class BookSaveTest {
 
     @Autowired
@@ -34,6 +36,6 @@ class BookSaveTest {
 
         List<Book> books = bookRepository.findAll();
         System.out.println("DB'deki toplam kitap sayisi: " + books.size());
-        assertTrue(books.size() > 0);
+        assertFalse(books.isEmpty());
     }
 }
