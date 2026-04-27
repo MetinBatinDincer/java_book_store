@@ -5,6 +5,8 @@ import com.bookstore.bookservice.model.*;
 import com.bookstore.bookservice.repository.BookRepository;
 import com.bookstore.bookservice.repository.OrderRepository;
 import com.bookstore.bookservice.repository.UserRepository;
+import com.bookstore.bookservice.strategy.DiscountStrategy;
+import com.bookstore.bookservice.strategy.NoDiscountStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +43,10 @@ public class OrderService {
     }
 
     public Order create(Long userId, List<OrderItem> items) {
+        return create(userId, items, new NoDiscountStrategy());
+    }
+
+    public Order create(Long userId, List<OrderItem> items, DiscountStrategy discountStrategy) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Kullanıcı bulunamadı: " + userId));
 
@@ -72,7 +78,7 @@ public class OrderService {
 
         bookRepository.saveAll(bookMap.values());
         order.setItems(items);
-        order.setTotalPrice(total);
+        order.setTotalPrice(discountStrategy.apply(total));
         return orderRepository.save(order);
     }
 

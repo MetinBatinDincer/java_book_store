@@ -16,6 +16,7 @@ import java.util.Optional;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final ActivityLogService activityLogService;
 
     @Transactional(readOnly = true)
     public List<Book> getAll() {
@@ -28,7 +29,9 @@ public class BookService {
     }
 
     public Book create(Book book) {
-        return bookRepository.save(book);
+        Book saved = bookRepository.save(book);
+        activityLogService.log("CREATE", "Book", saved.getId(), saved.getTitle() + " eklendi");
+        return saved;
     }
 
     public Book update(Long id, Book updated) {
@@ -39,12 +42,15 @@ public class BookService {
         existing.setIsbn(updated.getIsbn());
         existing.setPrice(updated.getPrice());
         existing.setStockQuantity(updated.getStockQuantity());
-        return bookRepository.save(existing);
+        Book saved = bookRepository.save(existing);
+        activityLogService.log("UPDATE", "Book", saved.getId(), saved.getTitle() + " güncellendi");
+        return saved;
     }
 
     public void delete(Long id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Kitap bulunamadı: " + id));
         bookRepository.delete(book);
+        activityLogService.log("DELETE", "Book", id, book.getTitle() + " silindi");
     }
 }
