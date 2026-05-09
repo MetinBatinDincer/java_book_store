@@ -3,9 +3,6 @@ package com.bookstore.ui.view;
 import com.bookstore.ui.model.Book;
 import com.bookstore.ui.service.BookApiService;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -26,27 +23,24 @@ public class BookListView extends BaseView {
         "Bilim & Teknoloji", "Tarih", "Diğer"
     );
 
-    private final BookApiService          apiService;
-    private final ObservableList<Book>    books;
-    private final FilteredList<Book>      filteredBooks;
-    private final TableView<Book>         tableView;
-    private final Label                   statusLabel;
-    private final Label                   countBadge;
-    private final ProgressIndicator       spinner;
-    private       Task<List<Book>>        activeTask;
+    private final BookApiService         apiService;
+    private final GenericTableView<Book> genericTable;
+    private final Label                  statusLabel;
+    private final Label                  countBadge;
+    private final ProgressIndicator      spinner;
+    private       Task<List<Book>>       activeTask;
 
     @Override protected void buildUI() {}
     @Override public void refresh() { loadBooks(); }
 
     public BookListView(BookApiService apiService) {
-        this.apiService    = apiService;
-        this.books         = FXCollections.observableArrayList();
-        this.filteredBooks = new FilteredList<>(books, b -> true);
-        this.tableView     = buildTable();
-        this.statusLabel   = new Label("Hazır.");
-        this.countBadge    = new Label("0 kitap");
-        this.spinner       = new ProgressIndicator();
+        this.apiService   = apiService;
+        this.genericTable = buildGenericTable();
+        this.statusLabel  = new Label("Hazır.");
+        this.countBadge   = new Label("0 kitap");
+        this.spinner      = new ProgressIndicator();
 
+        countBadge.textProperty().bind(genericTable.countProperty());
         spinner.setMaxSize(22, 22);
         spinner.setVisible(false);
         countBadge.getStyleClass().add("badge-blue");
@@ -57,8 +51,8 @@ public class BookListView extends BaseView {
         pageSubtitle.getStyleClass().add("page-subtitle");
         VBox titleBox = new VBox(4, pageTitle, pageSubtitle);
 
-        VBox card = new VBox(buildCardHeader(), buildToolbar(), tableView);
-        VBox.setVgrow(tableView, Priority.ALWAYS);
+        VBox card = new VBox(buildCardHeader(), buildToolbar(), genericTable);
+        VBox.setVgrow(genericTable, Priority.ALWAYS);
         card.getStyleClass().add("card");
 
         VBox wrapper = new VBox(16, titleBox, card);
@@ -108,7 +102,7 @@ public class BookListView extends BaseView {
     }
 
     @SuppressWarnings("unchecked")
-    private TableView<Book> buildTable() {
+    private GenericTableView<Book> buildGenericTable() {
         TableColumn<Book, Long>       idCol     = new TableColumn<>("#");
         TableColumn<Book, String>     titleCol  = new TableColumn<>("Başlık");
         TableColumn<Book, String>     authorCol = new TableColumn<>("Yazar");
@@ -192,12 +186,16 @@ public class BookListView extends BaseView {
             }
         });
 
-        TableView<Book> tv = new TableView<>(filteredBooks);
-        tv.getColumns().addAll(idCol, titleCol, authorCol, genreCol, isbnCol, priceCol, stockCol, actionsCol);
-        tv.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
-        tv.setPlaceholder(new Label("Henüz kitap eklenmemiş."));
-        VBox.setVgrow(tv, Priority.ALWAYS);
-        return tv;
+        GenericTableView<Book> gtv = new GenericTableView<>(
+            "Henüz kitap eklenmemiş.",
+            idCol, titleCol, authorCol, genreCol, isbnCol, priceCol, stockCol, actionsCol
+        );
+        gtv.setFilterPredicate((book, query) ->
+            (book.getTitle()  != null && book.getTitle().toLowerCase().contains(query))
+            || (book.getAuthor() != null && book.getAuthor().toLowerCase().contains(query))
+            || (book.getIsbn()   != null && book.getIsbn().toLowerCase().contains(query))
+        );
+        return gtv;
     }
 
     private HBox buildStatusBar() {
@@ -209,19 +207,7 @@ public class BookListView extends BaseView {
     }
 
     private void applyFilter(String val) {
-        String lower = val == null ? "" : val.toLowerCase();
-        filteredBooks.setPredicate(b ->
-            lower.isBlank()
-            || (b.getTitle()  != null && b.getTitle().toLowerCase().contains(lower))
-            || (b.getAuthor() != null && b.getAuthor().toLowerCase().contains(lower))
-            || (b.getIsbn()   != null && b.getIsbn().toLowerCase().contains(lower))
-        );
-        updateCount();
-    }
-
-    private void updateCount() {
-        int shown = filteredBooks.size(), total = books.size();
-        countBadge.setText(shown == total ? total + " kitap" : shown + " / " + total);
+        genericTable.applyFilter(val);
     }
 
     public void loadBooks() {
@@ -236,8 +222,7 @@ public class BookListView extends BaseView {
         };
 
         task.setOnSucceeded(e -> {
-            books.setAll(task.getValue());
-            updateCount();
+            genericTable.setItems(task.getValue());
             statusLabel.setText("Son güncelleme: "
                 + LocalTime.now().truncatedTo(ChronoUnit.SECONDS));
             spinner.setVisible(false);
@@ -267,7 +252,7 @@ public class BookListView extends BaseView {
         alert.showAndWait();
     }
 
-    public TableView<Book> getTableView() { return tableView; }
+    public TableView<Book> getTableView() { return genericTable.getTableView(); }
 
     private void showBookForm(Book existing) {
         boolean isNew = existing == null;

@@ -17,11 +17,11 @@
 | **Toplam** | **30** | |
 
 ### Yapılacaklar (Sırayla):
-1. [ ] Service katmanı ekle (BookService, UserService, OrderService)
-2. [ ] User ve Order modelleri + API'leri
-3. [ ] Hata yönetimi — GlobalExceptionHandler
-4. [ ] NoSQL entegrasyonu (Redis cache veya MongoDB)
-5. [ ] Docker-compose dosyası
+1. [x] Service katmanı ekle (BookService, UserService, OrderService)
+2. [x] User ve Order modelleri + API'leri
+3. [x] Hata yönetimi — GlobalExceptionHandler
+4. [x] NoSQL entegrasyonu (MongoDB — ActivityLog)
+5. [x] Docker-compose dosyası
 
 ---
 
@@ -35,12 +35,12 @@
 | **Toplam** | **20** | |
 
 ### Yapılacaklar (Sırayla):
-1. [ ] JavaFX veya Swing proje iskeleti kur
-2. [ ] Kitap listeleme ekranı (API'den veri çek)
-3. [ ] Kitap ekleme/silme formu
-4. [ ] Custom Graphics bileşeni (grafik, özel çizim vb.)
-5. [ ] JMeter/k6 performans testi
-6. [ ] Gateway kurulumu
+1. [x] JavaFX veya Swing proje iskeleti kur
+2. [x] Kitap listeleme ekranı (API'den veri çek)
+3. [x] Kitap ekleme/silme formu
+4. [x] Custom Graphics bileşeni (gradient kapak renkleri + SalesView)
+5. [x] JMeter/k6 performans testi
+6. [x] Gateway kurulumu
 
 ---
 
@@ -55,9 +55,9 @@
 | **Toplam** | **35** | |
 
 ### Yapılacaklar:
-1. [ ] GitHub'a düzenli commit (her ikisi de)
-2. [ ] README.md — Mermaid mimari diyagramı
-3. [ ] TDD döngüsü ile test yazımı (ikisi de kendi alanında)
+1. [x] GitHub'a düzenli commit (her ikisi de)
+2. [x] README.md — Mermaid mimari diyagramı
+3. [x] TDD döngüsü ile test yazımı (ikisi de kendi alanında)
 
 ---
 
@@ -118,14 +118,23 @@
 
 ## Durum
 
-> Son güncelleme: 2026-03-26
+> Son güncelleme: 2026-04-28
 
 | Görev | Durum |
 |-------|-------|
 | PostgreSQL bağlantısı | ✅ Tamamlandı |
 | Book CRUD API | ✅ Tamamlandı |
 | Book DB testi | ✅ Tamamlandı |
-| Service katmanı | ⏳ Bekliyor |
-| User / Order API | ⏳ Bekliyor |
-| NoSQL | ⏳ Bekliyor |
-| GUI | ⏳ Bekliyor |
+| Service katmanı | ✅ Tamamlandı |
+| User / Order API | ✅ Tamamlandı |
+| NoSQL (MongoDB) | ✅ Tamamlandı |
+| GUI (JavaFX) | ✅ Tamamlandı |
+| GlobalExceptionHandler | ✅ Tamamlandı |
+| Docker-compose | ✅ Tamamlandı |
+| Gateway | ✅ Tamamlandı |
+| k6 Performans Testleri | ✅ Tamamlandı |
+| TDD Testleri | ✅ Tamamlandı |
+| Strategy Pattern | ✅ Tamamlandı |
+| ApiResponse\<T\> | ✅ Tamamlandı |
+| GenericTableView\<T\> | ✅ Tamamlandı |
+| Mermaid Diyagramı | ✅ Tamamlandı |
