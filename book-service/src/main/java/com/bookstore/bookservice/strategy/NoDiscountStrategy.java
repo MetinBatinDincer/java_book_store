@@ -2,6 +2,7 @@ package com.bookstore.bookservice.strategy;
 
 import java.math.BigDecimal;
 
+// DiscountStrategy'yi implement eder; indirim uygulamaz, fiyatı aynen döner.
 public class NoDiscountStrategy implements DiscountStrategy {
 
     @Override

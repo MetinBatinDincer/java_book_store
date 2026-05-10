@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+// PostgreSQL değil MongoDB'ye yazar; sistem aktivitelerini NoSQL koleksiyonunda tutar.
 @Service
 @RequiredArgsConstructor
 public class ActivityLogService {

@@ -2,6 +2,7 @@ package com.bookstore.bookservice.strategy;
 
 import java.math.BigDecimal;
 
+// DiscountStrategy'yi implement eder; sabit TL miktarı düşer, sonuç sıfırın altına inemez.
 public class FixedDiscountStrategy implements DiscountStrategy {
 
     private final BigDecimal discountAmount;

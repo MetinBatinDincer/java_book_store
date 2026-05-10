@@ -18,6 +18,8 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+// Sipariş oluşturma, stok düşme ve toplam fiyat hesaplamalarını yönetir.
+// İndirim davranışı DiscountStrategy interface'i üzerinden enjekte edilir (Strategy Pattern).
 @Service
 @RequiredArgsConstructor
 @Transactional

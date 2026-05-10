@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+// Kitap CRUD işlemlerini yürüten servis katmanı.
+// Her değişiklik işleminde ActivityLogService aracılığıyla MongoDB'ye log kaydı atılır.
 @Service
 @RequiredArgsConstructor
 @Transactional

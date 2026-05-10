@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+// Kullanıcı CRUD işlemleri; kayıtta e-posta çakışması ve varsayılan rol ataması burada yönetilir.
 @Service
 @RequiredArgsConstructor
 @Transactional

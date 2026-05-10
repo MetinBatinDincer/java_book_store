@@ -3,6 +3,7 @@ package com.bookstore.bookservice.strategy;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+// DiscountStrategy'yi implement eder; toplam fiyata yüzde oranında indirim uygular.
 public class PercentageDiscountStrategy implements DiscountStrategy {
 
     private final BigDecimal percentage;

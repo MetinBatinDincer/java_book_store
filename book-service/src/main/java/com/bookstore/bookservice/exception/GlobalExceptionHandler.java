@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+// Merkezi hata yönetimi; tüm controller'lardan fırlayan exception'lar buraya düşer.
+// Her hata türü uygun HTTP kodu (400, 404, 409, 500) ile ApiResponse'a sarılarak döner.
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
