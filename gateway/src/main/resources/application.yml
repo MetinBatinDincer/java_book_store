@@ -8,21 +8,26 @@ spring:
     gateway:
       routes:
         - id: book-service-books
-          uri: http://localhost:8080
+          uri: ${BOOK_SERVICE_URL:http://localhost:8080}
           predicates:
             - Path=/api/books/**
 
         - id: book-service-users
-          uri: http://localhost:8080
+          uri: ${BOOK_SERVICE_URL:http://localhost:8080}
           predicates:
             - Path=/api/users/**
 
         - id: book-service-orders
-          uri: http://localhost:8080
+          uri: ${BOOK_SERVICE_URL:http://localhost:8080}
           predicates:
             - Path=/api/orders/**
 
         - id: book-service-logs
-          uri: http://localhost:8080
+          uri: ${BOOK_SERVICE_URL:http://localhost:8080}
           predicates:
             - Path=/api/logs/**
+
+        - id: book-service-auth
+          uri: ${BOOK_SERVICE_URL:http://localhost:8080}
+          predicates:
+            - Path=/api/auth/**

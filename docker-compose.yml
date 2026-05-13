@@ -36,6 +36,18 @@ services:
       - postgres
       - mongodb
 
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    container_name: bookstore-gateway
+    ports:
+      - "8888:8888"
+    environment:
+      BOOK_SERVICE_URL: http://book-service:8080
+    depends_on:
+      - book-service
+
 volumes:
   postgres_data:
   mongo_data:
