@@ -91,7 +91,7 @@ ZORUNLU ISTERLER                    PUAN   DURUM
 
 EK OZELLIKLER                       PUAN   DURUM
   Gateway (+5)                        +5   Tamamlandi
-  Test-Driven Gelistirme (+10)       +10   Tamamlandi
+  Mikroservis Mimarisi                +5   Tamamlandı
   Dockerize Sistem (+5)               +5   Tamamlandi
 
 ----------------------------------------------------------------
